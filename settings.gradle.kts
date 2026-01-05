@@ -1,2 +1,2 @@
 rootProject.name = "congestion-tax"
-include("calculator")
+include("congestion-tax-service")
