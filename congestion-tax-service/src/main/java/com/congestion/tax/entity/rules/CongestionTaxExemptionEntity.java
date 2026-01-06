@@ -1,7 +1,7 @@
 package com.congestion.tax.entity.rules;
 
 import com.congestion.tax.entity.CityEntity;
-import com.congestion.tax.entity.vehicle.VehicleEntity;
+import com.congestion.tax.model.vehicle.VehicleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +23,8 @@ import java.util.List;
 @Builder
 @Data
 @Entity
-@Table(name = "congestion_tax_exceptions")
-public class CongestionTaxExceptionEntity {
+@Table(name = "congestion_tax_exemptions")
+public class CongestionTaxExemptionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,7 +49,8 @@ public class CongestionTaxExceptionEntity {
     private Integer daysNotChargingAfterHoliday;
 
     @ElementCollection
-    private List<VehicleEntity> exemptVehicles;
+    @Enumerated(EnumType.STRING)
+    private List<VehicleType> exemptVehicleTypes;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

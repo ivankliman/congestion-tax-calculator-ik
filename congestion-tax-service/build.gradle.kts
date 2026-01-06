@@ -23,7 +23,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	//lombok
 	implementation("org.projectlombok:lombok:1.18.42")
+	//mapstruct
+	implementation("org.mapstruct:mapstruct:1.6.3")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+	//postgresql
+	implementation("org.postgresql:postgresql:42.7.8")
 
 	//TEST DEPENDENCIES
 	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")

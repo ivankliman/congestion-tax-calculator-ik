@@ -1,6 +1,6 @@
 package com.congestion.tax.entity.vehicle;
 
-import com.congestion.tax.model.VehicleType;
+import com.congestion.tax.model.vehicle.VehicleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
