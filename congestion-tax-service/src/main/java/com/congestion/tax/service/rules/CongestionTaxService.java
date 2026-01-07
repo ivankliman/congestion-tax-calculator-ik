@@ -30,10 +30,8 @@ public class CongestionTaxService {
         if (Objects.isNull(congestionTax.id())) {
             throw new IdMissingException("Id is required for the edit request");
         }
-        final var recordToUpdate = congestionTaxRepository.findById(congestionTax.id());
-        if(recordToUpdate.isEmpty()){
-            throw new NotFoundException("No record found with id " + congestionTax.id());
-        }
+        congestionTaxRepository.findById(congestionTax.id())
+                .orElseThrow(()->new NotFoundException("No record found with id " + congestionTax.id()));
 
         final var recordToSave = congestionTaxMapper.toEntity(congestionTax);
         final var savedRecord = congestionTaxRepository.save(recordToSave);
@@ -42,12 +40,10 @@ public class CongestionTaxService {
     }
 
     public CongestionTax getById(Long id) {
-        final var requestedRecord = congestionTaxRepository.findById(id);
-        if(requestedRecord.isEmpty()){
-            throw new NotFoundException("No record found with id " + id);
-        }
+        final var requestedRecord = congestionTaxRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("No record found with id " + id));
 
-        return congestionTaxMapper.toDto(requestedRecord.get());
+        return congestionTaxMapper.toDto(requestedRecord);
     }
 
     public Page<CongestionTax> findCongestionTaxRecords(Pageable pageable) {

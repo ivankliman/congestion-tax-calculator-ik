@@ -30,10 +30,8 @@ public class HolidayService {
         if (Objects.isNull(holiday.id())) {
             throw new IdMissingException("Id is required for the edit request");
         }
-        final var recordToUpdate = holidayRepository.findById(holiday.id());
-        if(recordToUpdate.isEmpty()){
-            throw new NotFoundException("No record found with id " + holiday.id());
-        }
+        holidayRepository.findById(holiday.id())
+                .orElseThrow(()->new NotFoundException("No record found with id " + holiday.id()));
 
         final var recordToSave = holidayMapper.toEntity(holiday);
         final var savedRecord = holidayRepository.save(recordToSave);
@@ -42,12 +40,10 @@ public class HolidayService {
     }
 
     public Holiday getById(Long id) {
-        final var requestedRecord = holidayRepository.findById(id);
-        if(requestedRecord.isEmpty()){
-            throw new NotFoundException("No record found with id " + id);
-        }
+        final var requestedRecord = holidayRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("No record found with id " + id));
 
-        return holidayMapper.toDto(requestedRecord.get());
+        return holidayMapper.toDto(requestedRecord);
     }
 
     public Page<Holiday> findHolidays(Pageable pageable) {

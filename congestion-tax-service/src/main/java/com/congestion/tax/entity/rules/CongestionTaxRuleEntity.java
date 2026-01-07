@@ -23,8 +23,8 @@ import java.util.List;
 @Builder
 @Data
 @Entity
-@Table(name = "congestion_tax_exemptions")
-public class CongestionTaxExemptionEntity {
+@Table(name = "congestion_tax_rules")
+public class CongestionTaxRuleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,6 +47,9 @@ public class CongestionTaxExemptionEntity {
 
     @Column
     private Integer daysNotChargingAfterHoliday;
+
+    @Column
+    private Double maxChargePerDay;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)

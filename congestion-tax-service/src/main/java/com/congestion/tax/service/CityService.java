@@ -33,10 +33,8 @@ public class CityService {
         if (Objects.isNull(city.id())) {
             throw new IdMissingException("Id is required for the edit request");
         }
-        final var recordToUpdate = cityRepository.findById(city.id());
-        if(recordToUpdate.isEmpty()){
-            throw new NotFoundException("No record found with id " + city.id());
-        }
+        cityRepository.findById(city.id())
+                .orElseThrow(()->new NotFoundException("No record found with id " + city.id()));
 
         final var recordToSave = cityMapper.toEntity(city);
         final var savedRecord = cityRepository.save(recordToSave);
@@ -45,12 +43,10 @@ public class CityService {
     }
 
     public City getById(Long id) {
-        final var requestedRecord = cityRepository.findById(id);
-        if(requestedRecord.isEmpty()){
-            throw new NotFoundException("No record found with id " + id);
-        }
+        final var requestedRecord = cityRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("No record found with id " + id));
 
-        return cityMapper.toDto(requestedRecord.get());
+        return cityMapper.toDto(requestedRecord);
     }
 
     public Page<City> findCities(Pageable pageable) {

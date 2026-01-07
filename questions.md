@@ -15,3 +15,4 @@
 
 - Should the system track specific users, or rely solely on vehicle-based identification?
 - How do we handle shared vehicles?
+- How do we handle vehicles who pass the 

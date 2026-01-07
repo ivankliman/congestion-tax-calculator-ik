@@ -1,6 +1,7 @@
 package com.congestion.tax.controller.vehicle;
 
 import com.congestion.tax.model.vehicle.VehiclePass;
+import com.congestion.tax.model.vehicle.VehiclePassRequest;
 import com.congestion.tax.service.vehicle.VehiclePassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class VehiclePassController {
     private final VehiclePassService vehiclePassService;
 
     @PostMapping
-    public ResponseEntity<VehiclePass> createVehiclePass(@RequestBody VehiclePass vehiclePass) {
-        return ResponseEntity.ok(vehiclePassService.createVehiclePass(vehiclePass));
+    public ResponseEntity<VehiclePass> createVehiclePass(@RequestBody VehiclePassRequest vehiclePassRequest) {
+        return ResponseEntity.ok(vehiclePassService.createVehiclePass(vehiclePassRequest));
     }
 }

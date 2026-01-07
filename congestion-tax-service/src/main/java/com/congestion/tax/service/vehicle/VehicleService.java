@@ -30,10 +30,8 @@ public class VehicleService {
         if (Objects.isNull(vehicle.id())) {
             throw new IdMissingException("Id is required for the edit request");
         }
-        final var recordToUpdate = vehicleRepository.findById(vehicle.id());
-        if(recordToUpdate.isEmpty()){
-            throw new NotFoundException("No record found with id " + vehicle.id());
-        }
+        vehicleRepository.findById(vehicle.id())
+                .orElseThrow(()->new NotFoundException("No record found with id " + vehicle.id()));
 
         final var recordToSave = vehicleMapper.toEntity(vehicle);
         final var savedRecord = vehicleRepository.save(recordToSave);
@@ -42,12 +40,10 @@ public class VehicleService {
     }
 
     public Vehicle getById(Long id) {
-        final var requestedRecord = vehicleRepository.findById(id);
-        if(requestedRecord.isEmpty()){
-            throw new NotFoundException("No record found with id " + id);
-        }
+        final var requestedRecord = vehicleRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("No record found with id " + id));
 
-        return vehicleMapper.toDto(requestedRecord.get());
+        return vehicleMapper.toDto(requestedRecord);
     }
 
     public Page<Vehicle> findVehicles(Pageable pageable) {
