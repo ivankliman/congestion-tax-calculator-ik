@@ -39,6 +39,7 @@ public class ChargeService {
     private final VehicleMapper vehicleMapper;
 
     public Boolean isEligibleForCharge(VehiclePass vehiclePass) {
+        log.info("Checking if vehicle: {} is eligible for charge", vehiclePass.vehicle().licensePlate());
         final var chargeTime = vehiclePass.vehiclePassedAt();
 
         // find rule exemptions for the city
@@ -54,6 +55,7 @@ public class ChargeService {
     }
 
     public void addChargeToPendingCharges(VehiclePass vehiclePass) {
+        log.info("Checking if vehicle: {} is eligible for charge", vehiclePass);
         final var chargeTime = vehiclePass.vehiclePassedAt().atZone(vehiclePass.city().timezone()).toInstant();
         final var congestionTaxEntityOptional =
                 congestionTaxRepository
@@ -65,7 +67,11 @@ public class ChargeService {
         }
 
         final var chargeTimeMinusOneHour = chargeTime.minus(1, ChronoUnit.HOURS);
-        final var chargeRecordWithinTheSameHourOptional = congestionTaxPendingChargeRepository.findByFirstPassBetween(chargeTimeMinusOneHour, chargeTime);
+        final var chargeRecordWithinTheSameHourOptional = congestionTaxPendingChargeRepository.findByCityIdAndVehicleIdAndFirstPassBetween(
+                vehiclePass.city().id(),
+                vehiclePass.vehicle().id(),
+                chargeTimeMinusOneHour,
+                chargeTime);
         //if there is no record, or the record date is transferred to another day, create a new record
         if (chargeRecordWithinTheSameHourOptional.isEmpty() || isVehiclePassInAnotherDay(chargeRecordWithinTheSameHourOptional.get(), vehiclePass)) {
             log.info("Pending charge object not found, saving a new one");
@@ -89,12 +95,13 @@ public class ChargeService {
     }
 
     @Transactional
-    @Scheduled(cron = "${charging.cron}")
+    @Scheduled(cron = "0 */2 * * * *")
+    //@Scheduled(cron = "0 0 * * * ?")
     public void handlePendingCharges() {
+        log.info("Charging pending charge objects");
         //checking if the start pass happened more than one hour ago to avoid updates to that record. This is because of the single charge rule
         final var hourAndAHalfAgo = Instant.now().minus(90, ChronoUnit.MINUTES);
         final var chargesToHandle = congestionTaxPendingChargeRepository.findByFirstPassLessThanEqual(hourAndAHalfAgo);
-        final var dailyMaxedRecords = new ArrayList<Long>();
         final var chargeRecordsToRemove = new ArrayList<Long>();
 
         for (var chargeRecord : chargesToHandle) {
@@ -125,14 +132,16 @@ public class ChargeService {
                 final var congestionTaxRule = congestionTaxRuleRepository.findByCityId(chargeRecord.getCity().getId());
                 final var dailyChargeUntilNow = dailyChargeUntilNowOptional.get();
 
-                if (dailyMaxedRecords.contains(dailyChargeUntilNow.getId())) {
-                    log.info("Skipping charge record with id: {} because it reached daily max charges",  chargeRecord.getId());
-                    chargeRecordsToRemove.add(chargeRecord.getId());
-                    continue;
-                }
 
                 if (congestionTaxRule.isPresent() && congestionTaxRule.get().getMaxChargePerDay() > 0.0) {
                     final var maxChargePerDay = congestionTaxRule.get().getMaxChargePerDay();
+                    // check if the daily charge is maxed for this vehicle/city
+                    if (dailyChargeUntilNow.getDailyChargeAmount().equals(maxChargePerDay)) {
+                        log.info("Skipping charge record with id: {} because it reached daily max charges",  chargeRecord.getId());
+                        chargeRecordsToRemove.add(chargeRecord.getId());
+                        continue;
+                    }
+
                     final var realChargePrice = dailyChargeUntilNow.getDailyChargeAmount() + chargeRecord.getPrice() > maxChargePerDay
                             ? maxChargePerDay - dailyChargeUntilNow.getDailyChargeAmount()
                             : chargeRecord.getPrice();
@@ -149,9 +158,6 @@ public class ChargeService {
                             chargeRecord.getCity().getName(),
                             realChargePrice);
                     chargeRecordsToRemove.add(chargeRecord.getId());
-                    if(dailyChargeUntilNow.getDailyChargeAmount().equals(maxChargePerDay)) {
-                        dailyMaxedRecords.add(dailyChargeUntilNow.getId());
-                    }
                 }
             }
 

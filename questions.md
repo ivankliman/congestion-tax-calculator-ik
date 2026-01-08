@@ -11,6 +11,7 @@
 - Are there other rules that should be configurable? Like the tax not being calculated on weekends, public holidays etc. 
 - Are there any other possibilities of charging? Every pass, shorter timespan than 1 hour?
 - Is this code supposed to work for the cities outside of Sweden? If so, we should include countries for currency and holiday definitions
+
 ## 3. Vehicle Identification
 
 - Should the system track specific users, or rely solely on vehicle-based identification?

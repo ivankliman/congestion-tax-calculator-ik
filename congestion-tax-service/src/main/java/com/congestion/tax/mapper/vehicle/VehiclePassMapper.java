@@ -15,5 +15,5 @@ public interface VehiclePassMapper extends AbstractMapper<VehiclePass, VehiclePa
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    VehiclePassEntity toEntity(VehicleEntity vehicle, CityEntity city, LocalDateTime vehiclePassDate);
+    VehiclePassEntity toEntity(VehicleEntity vehicle, CityEntity city, LocalDateTime vehiclePassedAt);
 }

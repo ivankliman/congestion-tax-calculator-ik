@@ -22,13 +22,13 @@ import java.time.LocalDate;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uk_city_vehicle_date",
-                        columnNames = {"city_id", "vehicle_id", "local_date"}
+                        columnNames = {"city_id", "vehicle_id", "charge_date"}
                 )
         },
         indexes = {
                 @Index(
-                        name = "idx_city_vehicle_date",
-                        columnList = "city_id, vehicle_id, local_date"
+                        name = "city_vehicle_date_idx",
+                        columnList = "city_id, vehicle_id, charge_date"
                 )
         })
 public class VehicleDailyChargeEntity {

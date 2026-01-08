@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface CongestionTaxPendingChargeRepository extends JpaRepository<CongestionTaxPendingChargeEntity, Long> {
-    Optional<CongestionTaxPendingChargeEntity> findByFirstPassBetween(Instant start, Instant end);
+    Optional<CongestionTaxPendingChargeEntity> findByCityIdAndVehicleIdAndFirstPassBetween(Long cityId, Long vehicleId, Instant start, Instant end);
 
     List<CongestionTaxPendingChargeEntity> findByFirstPassLessThanEqual(Instant time);
 }
