@@ -22,27 +22,30 @@ importance.
 - For the deployment to different environments, we need to create different profiles so that the env variables are loaded differently
 - Create new application.yaml files for it
 
-### 3. Error handling
+### 3. Cover the code with tests
+- Cover the code with unit, integration and end to end tests
+
+### 4. Error handling
 - Need to add Controller Advice for handling the custom exceptions. Maybe adding exception code as well.
 - Return different HTTP status codes depending on the error
 
-### 4. Field validations
+### 5. Field validations
 - We should use jakarta validations where we can so that we reject invalid requests quickly
 
-### 5. Logging
+### 6. Logging
 - Logs are inconsistent and should be streamlined
 - Needing multiple level of logs to be more detailed
 
-### 6. Add caching
+### 7. Add caching
 - I would add caching into often fetched records
 
-### 7. Potentially split into microservices
+### 8. Potentially split into microservices
 - There is a potential for splitting this service into multiple microservices
 - I would split it similarly to the package naming in the service layer
 
-### 8. Create additional modules
+### 9. Create additional modules
 - We should add more modules so that the app can, for example, expose dtos to other services
 - As another example, we can create a client module which would define an http client if we want to call our microservice with http
 
-### 8. Add checkstyle
+### 10. Add checkstyle
 - Checkstyle or something similar should be added so that the code conventions are streamlined
