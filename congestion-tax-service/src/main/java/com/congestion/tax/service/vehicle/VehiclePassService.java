@@ -37,11 +37,9 @@ public class VehiclePassService {
         final var savedRecord = vehiclePassRepository.save(recordToSave);
         final var savedVehiclePass = vehiclePassMapper.toDto(savedRecord);
 
-        final var isEligibleForCharge = chargeService.isEligibleForCharge(savedVehiclePass);
-        if (isEligibleForCharge) {
+        if (chargeService.isEligibleForCharge(savedVehiclePass)) {
             chargeService.addChargeToPendingCharges(savedVehiclePass);
         }
-
 
         return savedVehiclePass;
     }

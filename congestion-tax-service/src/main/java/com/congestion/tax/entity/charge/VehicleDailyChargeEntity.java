@@ -1,5 +1,6 @@
 package com.congestion.tax.entity.charge;
 
+import com.congestion.tax.entity.CityEntity;
 import com.congestion.tax.entity.vehicle.VehicleEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,15 +18,31 @@ import java.time.LocalDate;
 @Builder
 @Data
 @Entity
-@Table(name = "vehicle_daily_charges")
+@Table(name = "vehicle_daily_charges",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_city_vehicle_date",
+                        columnNames = {"city_id", "vehicle_id", "local_date"}
+                )
+        },
+        indexes = {
+                @Index(
+                        name = "idx_city_vehicle_date",
+                        columnList = "city_id, vehicle_id, local_date"
+                )
+        })
 public class VehicleDailyChargeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vehicle_id", nullable = false)
     private VehicleEntity vehicleEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "city_id", nullable = false)
+    private CityEntity cityEntity;
 
     @Column
     private LocalDate chargeDate;
