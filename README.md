@@ -21,7 +21,7 @@ importance.
 ### 2. Add support for profiles
 - For the deployment to different environments, we need to create different profiles so that the env variables are loaded differently
 - Create new application.yaml files for it
-- 
+
 ### 3. Error handling
 - Need to add Controller Advice for handling the custom exceptions. Maybe adding exception code as well.
 - Return different HTTP status codes depending on the error
