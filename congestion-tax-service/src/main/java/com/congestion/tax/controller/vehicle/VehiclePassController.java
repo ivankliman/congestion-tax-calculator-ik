@@ -17,7 +17,7 @@ public class VehiclePassController {
     private final VehiclePassService vehiclePassService;
 
     @PostMapping
-    public ResponseEntity<VehiclePass> createVehiclePass(@RequestBody VehiclePassRequest vehiclePassRequest) {
-        return ResponseEntity.ok(vehiclePassService.createVehiclePass(vehiclePassRequest));
+    public ResponseEntity<VehiclePass> handleVehiclePass(@RequestBody VehiclePassRequest vehiclePassRequest) {
+        return ResponseEntity.ok(vehiclePassService.handleVehiclePass(vehiclePassRequest));
     }
 }

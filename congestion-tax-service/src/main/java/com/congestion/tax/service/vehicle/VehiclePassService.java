@@ -6,6 +6,7 @@ import com.congestion.tax.model.vehicle.VehiclePassRequest;
 import com.congestion.tax.repository.CityRepository;
 import com.congestion.tax.repository.vehicle.VehiclePassRepository;
 import com.congestion.tax.repository.vehicle.VehicleRepository;
+import com.congestion.tax.service.charge.ChargeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +18,10 @@ public class VehiclePassService {
     private final VehiclePassMapper vehiclePassMapper;
     private final CityRepository cityRepository;
     private final VehicleRepository vehicleRepository;
+    private final ChargeService chargeService;
 
     @Transactional
-    public VehiclePass createVehiclePass(VehiclePassRequest vehiclePassRequest) {
+    public VehiclePass handleVehiclePass(VehiclePassRequest vehiclePassRequest) {
         final var vehicleEntity = vehicleRepository
                 .findByLicensePlate(vehiclePassRequest.licensePlate())
                 .orElseThrow();
@@ -33,7 +35,14 @@ public class VehiclePassService {
 
         //TODO: check if the vehicle should be charged and then add it to the congestion tax pending charge table
         final var savedRecord = vehiclePassRepository.save(recordToSave);
+        final var savedVehiclePass = vehiclePassMapper.toDto(savedRecord);
 
-        return vehiclePassMapper.toDto(savedRecord);
+        final var isEligibleForCharge = chargeService.isEligibleForCharge(savedVehiclePass);
+        if (isEligibleForCharge) {
+            chargeService.addChargeToPendingCharges(savedVehiclePass);
+        }
+
+
+        return savedVehiclePass;
     }
 }

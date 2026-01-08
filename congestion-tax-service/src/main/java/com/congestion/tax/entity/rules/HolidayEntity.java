@@ -20,7 +20,10 @@ import java.time.LocalDate;
 @Builder
 @Data
 @Entity
-@Table(name = "holidays")
+@Table(name = "holidays",
+        indexes = {
+                @Index(name = "holiday_date_idx", columnList = "holidayDate")
+        })
 public class HolidayEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

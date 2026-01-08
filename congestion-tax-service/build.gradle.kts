@@ -30,6 +30,8 @@ dependencies {
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 	//postgresql
 	implementation("org.postgresql:postgresql:42.7.8")
+	//hibernate
+	implementation("org.hibernate.orm:hibernate-envers:7.2.0.Final")
 
 	//TEST DEPENDENCIES
 	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")

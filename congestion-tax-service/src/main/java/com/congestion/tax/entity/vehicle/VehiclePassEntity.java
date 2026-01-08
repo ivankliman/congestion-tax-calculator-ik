@@ -17,7 +17,10 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 @Entity
-@Table(name = "vehicle_passes")
+@Table(name = "vehicle_passes",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"vehicle_id", "vehicle_passed_at"})
+        })
 public class VehiclePassEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +29,7 @@ public class VehiclePassEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private VehicleEntity vehicle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private CityEntity city;
 
     @Column
