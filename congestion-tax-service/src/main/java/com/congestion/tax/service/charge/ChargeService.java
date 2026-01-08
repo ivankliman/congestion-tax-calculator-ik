@@ -95,8 +95,7 @@ public class ChargeService {
     }
 
     @Transactional
-    @Scheduled(cron = "0 */2 * * * *")
-    //@Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "0 0 * * * ?")
     public void handlePendingCharges() {
         log.info("Charging pending charge objects");
         //checking if the start pass happened more than one hour ago to avoid updates to that record. This is because of the single charge rule
