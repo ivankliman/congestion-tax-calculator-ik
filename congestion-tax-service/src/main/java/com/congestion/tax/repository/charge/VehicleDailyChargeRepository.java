@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface VehicleDailyChargeRepository extends JpaRepository<VehicleDailyChargeEntity, Long> {
-    Optional<VehicleDailyChargeEntity> findByCityAndVehicleAndLocalDate(
+    Optional<VehicleDailyChargeEntity> findByCityAndVehicleAndChargeDate(
             CityEntity city,
             VehicleEntity vehicle,
             LocalDate localDate

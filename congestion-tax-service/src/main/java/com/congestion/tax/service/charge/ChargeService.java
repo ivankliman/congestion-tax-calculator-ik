@@ -101,13 +101,13 @@ public class ChargeService {
             LocalDate localDateOfPendingCharge = chargeRecord.getFirstPass().atZone(chargeRecord.getCity().getTimezone()).toLocalDate();
 
             final var dailyChargeUntilNowOptional = vehicleDailyChargeRepository
-                    .findByCityAndVehicleAndLocalDate(chargeRecord.getCity(), chargeRecord.getVehicleEntity(),  localDateOfPendingCharge);
+                    .findByCityAndVehicleAndChargeDate(chargeRecord.getCity(), chargeRecord.getVehicle(),  localDateOfPendingCharge);
 
             //we assume that a single hour charge is less than max daily charge
             if(dailyChargeUntilNowOptional.isEmpty()) {
                 final var vehicleDailyChargeEntity = VehicleDailyChargeEntity.builder()
-                        .vehicleEntity(chargeRecord.getVehicleEntity())
-                        .cityEntity(chargeRecord.getCity())
+                        .vehicle(chargeRecord.getVehicle())
+                        .city(chargeRecord.getCity())
                         .chargeDate(localDateOfPendingCharge)
                         .dailyChargeAmount(chargeRecord.getPrice())
                         .build();
@@ -115,7 +115,7 @@ public class ChargeService {
                 vehicleDailyChargeRepository.saveAndFlush(vehicleDailyChargeEntity);
                 //TODO: charge the record
                 log.info("Vehicle with license plate: {} has been charged the congestion tax for date: {} in the city: {} with amount of: {}",
-                        chargeRecord.getVehicleEntity().getLicensePlate(),
+                        chargeRecord.getVehicle().getLicensePlate(),
                         localDateOfPendingCharge,
                         chargeRecord.getCity().getName(),
                         chargeRecord.getPrice());
@@ -144,7 +144,7 @@ public class ChargeService {
                     vehicleDailyChargeRepository.saveAndFlush(dailyChargeUntilNow);
                     //TODO: charge the record
                     log.info("Vehicle with license plate: {} has been charged the congestion tax for date: {} in the city: {} with amount of: {}",
-                            chargeRecord.getVehicleEntity().getLicensePlate(),
+                            chargeRecord.getVehicle().getLicensePlate(),
                             localDateOfPendingCharge,
                             chargeRecord.getCity().getName(),
                             realChargePrice);

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("/vehicle-passes")
 @RequiredArgsConstructor
 public class VehiclePassController {
     private final VehiclePassService vehiclePassService;

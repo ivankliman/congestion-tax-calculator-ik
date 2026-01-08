@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.Audited;
 
 import java.time.Instant;
 
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Builder
 @Data
 @Entity
+@Audited
 @Table(name = "vehicles",
         indexes = {
                 @Index(name = "vehicle_license_plate_idx", columnList = "license_plate")

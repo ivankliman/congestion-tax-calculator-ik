@@ -38,11 +38,11 @@ public class VehicleDailyChargeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vehicle_id", nullable = false)
-    private VehicleEntity vehicleEntity;
+    private VehicleEntity vehicle;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "city_id", nullable = false)
-    private CityEntity cityEntity;
+    private CityEntity city;
 
     @Column
     private LocalDate chargeDate;

@@ -34,7 +34,7 @@ public class CongestionTaxPendingChargeEntity {
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vehicle_id", nullable = false)
-    private VehicleEntity vehicleEntity;
+    private VehicleEntity vehicle;
 
     @Column
     private Instant firstPass;

@@ -20,4 +20,5 @@ public interface CongestionTaxRepository extends JpaRepository<CongestionTaxEnti
     Optional<CongestionTaxEntity> findByCityIdAndBetweenStartTimeAndEndTime(
             @Param("cityId") Long cityId,
             @Param("time") LocalTime time
-    );}
+    );
+}

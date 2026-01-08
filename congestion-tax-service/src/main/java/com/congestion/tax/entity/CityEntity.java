@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.Audited;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -21,6 +22,7 @@ import java.time.ZoneId;
 @Builder
 @Data
 @Entity
+@Audited
 @Table(name = "cities")
 public class CityEntity {
     @Id
